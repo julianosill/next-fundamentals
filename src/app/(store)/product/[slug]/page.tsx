@@ -1,7 +1,7 @@
-import { ShoppingBag } from 'lucide-react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 
+import { AddToCartButton } from '@/components/add-to-cart-button'
 import { api } from '@/data/api'
 import { IProduct } from '@/data/types/product'
 import { formatPrice } from '@/utils/format-price'
@@ -99,13 +99,7 @@ export default async function ProductPage({ params }: ProductProps) {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="mt-8 flex h-12 items-center justify-center rounded-full bg-emerald-600 font-semibold text-white gap-2 hover:bg-emerald-500"
-        >
-          <ShoppingBag className="size-5" />
-          Add to cart
-        </button>
+        <AddToCartButton productId={product.id} />
       </div>
     </main>
   )
