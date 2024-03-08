@@ -6,7 +6,11 @@ import { IProduct } from '@/data/types/product'
 import { formatPrice } from '@/utils/format-price'
 
 async function getFeaturedProducts(): Promise<IProduct[]> {
-  const response = await api('/products/featured')
+  const response = await api('/products/featured', {
+    next: {
+      revalidate: 60 * 60, // 1 hour
+    },
+  })
   const products = await response.json()
 
   return products
@@ -18,7 +22,7 @@ export default async function Home() {
   return (
     <main className=" grid max-h-[920px] grid-cols-9 grid-rows-6 gap-6">
       <Link
-        href={`/products/${highlightedProduct.slug}`}
+        href={`/product/${highlightedProduct.slug}`}
         className="relative group col-span-6 row-span-6 rounded-lg bg-zinc-900 overflow-hidden flex justify-center"
       >
         <Image
@@ -40,7 +44,7 @@ export default async function Home() {
       {otherProducts.map((product) => (
         <Link
           key={product.id}
-          href="/"
+          href={`/product/${product.slug}`}
           className="relative group col-span-3 row-span-3 rounded-lg bg-zinc-900 overflow-hidden flex justify-center"
         >
           <Image
