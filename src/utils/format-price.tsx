@@ -1,7 +1,7 @@
-export function formatPrice(price: number) {
+export function formatPrice(price: number, decimals: boolean = true) {
   return price.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-    maximumFractionDigits: 0,
+    maximumFractionDigits: decimals ? 2 : 0,
   })
 }

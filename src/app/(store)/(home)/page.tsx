@@ -36,7 +36,7 @@ export default async function Home() {
         <div className="absolute bottom-20 right-20 h-12 flex items-center gap-2 max-w-[288px] rounded-full border-2 border-zinc-500 bg-black/60 p-1 pl-5">
           <span className="text-sm truncate">{highlightedProduct.title}</span>
           <span className="flex h-full items-center justify-center rounded-full bg-violet-500 px-4 font-semibold whitespace-nowrap">
-            {formatPrice(highlightedProduct.price)}
+            {formatPrice(highlightedProduct.price, false)}
           </span>
         </div>
       </Link>
@@ -58,7 +58,7 @@ export default async function Home() {
           <div className="absolute bottom-0 group-hover:bottom-10 right-10 h-12 flex items-center gap-2 max-w-[240px] rounded-full border-2 border-zinc-500 bg-black/60 p-1 pl-5 opacity-0 group-hover:opacity-100 transition-all duration-300">
             <span className="text-sm truncate">{product.title}</span>
             <span className="flex h-full items-center justify-center rounded-full bg-violet-500 px-4 font-semibold whitespace-nowrap">
-              {formatPrice(product.price)}
+              {formatPrice(product.price, false)}
             </span>
           </div>
         </Link>
