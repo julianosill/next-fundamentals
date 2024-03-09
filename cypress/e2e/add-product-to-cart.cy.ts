@@ -23,7 +23,7 @@ describe('add product to cart', () => {
   })
 
   it('should be able to search for a product and add it to cart', () => {
-    cy.get('input[name=q]').type('mole').parent('form').submit()
+    cy.searchByQuery('mole')
 
     cy.get('a[href^="/product"]').first().click()
     cy.location('pathname').should('include', '/product')

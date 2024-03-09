@@ -1,7 +1,6 @@
 describe('search product', () => {
   it('should be able to search for a product', () => {
-    cy.visit('/')
-    cy.get('input[name=q]').type('mole').parent('form').submit()
+    cy.searchByQuery('mole')
 
     cy.location('pathname').should('include', '/search')
     cy.location('search').should('include', 'q=mole')
