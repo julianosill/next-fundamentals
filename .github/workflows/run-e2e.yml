@@ -1,9 +1,9 @@
-name: Cypress Tests
+name: Cypress Tests 3
 
 on: push
 
 jobs:
-  e2e:
+  cypress-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -12,47 +12,45 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install PNPM
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
           run_install: false
 
       - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        id: store-path
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Install Cypress
+        run: npx cypress install
+
+      - name: Setup Cypress cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-cypress-installation-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-installation-
+
       - name: Install dependencies
         run: pnpm install
 
-      - name: Cache Cypress binary
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Verify Cypress
-        run: |
-          pnpm cypress install
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        env:
-          APP_URL: 'http://localhost:3000'
-          NEXT_PUBLIC_API_BASE_URL: 'https://devstore-api-gamma.vercel.app'
+        env: 
+          APP_URL: "http://localhost:3000"
+          NEXT_PUBLIC_API_BASE_URL: "https://ignite-devstore-api.vercel.app"
         with:
-          build: npm run build
-          start: npm start
+          build: pnpm run build
+          start: pnpm start
